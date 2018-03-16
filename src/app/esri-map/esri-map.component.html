@@ -1,0 +1,26 @@
+<div style="margin: 0;
+padding: 0;
+width: 100%;
+height: 800px"
+#mapViewNode></div>
+
+<div style=" position: absolute;
+left: 65px;
+top: 11px;
+background: white;
+width:320px;">
+    <div class="esri--map--viwe--search--box">
+        <input type="text" class="search--box__input">
+        <i class="fa fa-search"></i>
+    </div>
+    <div class="search--result--list--box">
+        <div class="head">名称</div>
+        <ul>
+            <li *ngFor="let point of pointLists" class="searchPoint">
+                {{point.name}}
+            </li>
+        </ul>
+    </div>  
+    
+</div>
+

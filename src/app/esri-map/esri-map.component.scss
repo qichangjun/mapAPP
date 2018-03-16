@@ -1,0 +1,54 @@
+.esri--map--viwe--search--box{
+    // background: #eee;
+    padding: 10px 10px 0 10px;
+    position: relative;
+    .search--box__input{
+      width: calc(100% - 26px);  
+      padding-right: 20px;
+      font-size: 13px;
+    }
+    .fa-search{
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-size: 12px;
+      color: #6e6e6e;
+      cursor: pointer;
+      &:hover{
+        color: #333;
+      }
+    }
+}
+.search--result--list--box{
+  margin: 10px;
+  
+  border: 1px solid #e0e0e0;
+  .head{
+    font-size: 13px;
+    padding: 3px;
+    background: #eee;
+    border-bottom: 1px solid #d3d3d3;
+  }
+  ul{
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    li{
+      list-style: none;
+      font-size: 13px;
+      padding: 3px 0 3px 3px;
+      width: calc(100% - 3px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      &:nth-child(even){
+        background: #eee;
+      }
+      &:hover{
+        background: #dce9f5;
+        cursor: pointer;
+      }
+    }
+  }
+}

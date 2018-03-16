@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+    <title>Test Map</title>
+    <link rel="stylesheet" href="./library/4.6/dijit/themes/claro/claro.css" />
+    <link rel="stylesheet" href="./library/4.6/esri/css/main.css" />
+    <style>
+        html,
+        body,
+        #viewDiv {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script src="./library/4.6/dojo/dojo.js"></script>
+    <script>
+        var myMap, view;
+        require([
+            "esri/Basemap",
+            "esri/layers/OpenStreetMapLayer",
+            "esri/Map",
+            "esri/views/SceneView",
+            "esri/geometry/Extent",
+            "esri/geometry/Point",
+            "esri/widgets/Search",
+            "esri/Graphic",
+            "esri/PopupTemplate",
+            "dojo/domReady!"
+        ], function (Basemap, OpenStreetMapLayer, Map, SceneView, Extent, Point, Search, Graphic, PopupTemplate){
+            // --------------------------------------------------------------------
+            // 实例化新的OpenStreetMapLayer视图层
+            // url可设置为自己服务器地址,若没有则用https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer
+            // --------------------------------------------------------------------
+            var layer = new OpenStreetMapLayer({
+                subDomain : 'a',
+                urlTemplate : "https://{subDomain}.tile.openstreetmap.org/{level}/{col}/{row}.png"
+            });
+            //  --------------------------------------------------------------------
+            //  实例化新的Basemap,在下面的Map类中使用
+            //  --------------------------------------------------------------------
+            var customBasemap = new Basemap({
+                baseLayers: [layer],
+                title: "Custom Basemap",
+                id: "myBasemap"
+            });
+
+            //  --------------------------------------------------------------------
+            //  若要设置为地球化视图，则加入ground: "world-elevation"
+            //  --------------------------------------------------------------------
+            myMap = new Map({
+                basemap: customBasemap,
+                ground: "world-elevation"
+            });
+            //  --------------------------------------------------------------------
+            //  center，设置为杭州的经纬度
+            //  container 加载地图的dom id
+            //  map 上面实例的Map类
+            //  zoom 初始化的视图大小
+            //  --------------------------------------------------------------------
+            view = new SceneView({
+                center: [120.23227913526993,30.214125039055258], // long, lat
+                container: "viewDiv",
+                map: myMap,
+                zoom: 18
+            });
+            //  --------------------------------------------------------------------
+            //  分别为最大视图比例和最小视图比例
+            //  minZoom 最远可滑至的地图比例
+            //  --------------------------------------------------------------------
+            view.constraints = {
+                minZoom:1,
+                maxZoom:20
+            };
+            //  --------------------------------------------------------------------
+            //  地图上的点击事件
+            //  event上可获取经纬度坐标event.mapPoint.latitude,event.mapPoint.longitude
+            //  --------------------------------------------------------------------
+            view.on("click", function(event) {
+                // the hitTest() checks to see if any graphics in the view
+                // intersect the given screen x, y coordinates
+                console.log(event.mapPoint.latitude,event.mapPoint.longitude)
+            });
+            //  --------------------------------------------------------------------
+            //  添加搜索框
+            //  sources属性，如果添加则会从本地获取搜索信息
+            //  没有则在服务器上获取
+            //  --------------------------------------------------------------------
+            var searchWidget = new Search({
+                view: view,
+//                sources:[]
+            });
+
+            // Add the search widget to the top right corner of the view
+            view.ui.add(searchWidget, {
+                position: "top-right"
+            });
+            var pointLists = [{
+                longitude: 120.23227913526993,
+                latitude: 30.214125039055258,
+                name : '点A',
+                details : 'AAAAAAAAAAAAAAA'
+            },{
+                longitude: 120.8,
+                latitude: 30.214125039055258,
+                name : '点B',
+                details: 'BBBBBBBBBBBBBB'
+            },{
+                longitude: 120.7,
+                latitude: 30.214125039055258,
+                name : '点C',
+                details : 'CCCCCCCCCC'
+            }];
+            pointLists.forEach(function(point){
+                var pointMark = {
+                    type: "point",
+                    longitude: point.longitude,
+                    latitude: point.latitude
+                };
+                var markerSymbol = {
+                    type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+                    color: [226, 119, 40]
+                };
+                var pointGraphic = new Graphic({
+                    geometry: pointMark,
+                    symbol: markerSymbol,
+                    attributes:{
+                        name : point.name,
+                        details : point.details
+                    },
+                    popupTemplate: {
+                        title : "{name}",
+                        content :  "<p>hello这是, <b>{name}</b> " +
+                            " 这里是详细信息</p>" +
+                            "<ul><li>{details} </li>" +
+                            "<ul>"
+                    }
+                });
+                view.graphics.addMany([pointGraphic])
+            });
+        });
+    </script>
+</head>
+<body class="claro">
+<div id="viewDiv"></div>
+</body>
+</html>
