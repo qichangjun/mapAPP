@@ -23,12 +23,14 @@
         "assets/arcgis_js_api/library/4.6/dijit/themes/claro/claro.css",
         "assets/arcgis_js_api/library/4.6/esri/css/main.css",
         "../node_modules/font-awesome/css/font-awesome.min.css",
-        "../node_modules/bootstrap/dist/css/bootstrap.min.css"
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "../src/assets/zTree/main.scss"
       ],
       "scripts": [
         "assets/arcgis_js_api/library/4.6/dojo/dojo.js",
         "../node_modules/jquery/dist/jquery.min.js",
-        "../node_modules/bootstrap/dist/js/bootstrap.min.js"
+        "../node_modules/bootstrap/dist/js/bootstrap.min.js",        
+        "../src/assets/zTree/zTree_v3/js/jquery.ztree.core-3.5.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

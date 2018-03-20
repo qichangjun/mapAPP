@@ -3,12 +3,13 @@ import { NgModule } from '@angular/core';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { HttpModule,Http,BaseRequestOptions,RequestOptions,Headers } from '@angular/http';
 
-
 import { AppComponent } from './app.component';
 import { EsriMapComponent } from './esri-map/esri-map.component';
-import { AppRouteModule } from './app-route.module';
+import { AppRouteModule } from './app-router/app-route.module';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { RecordComponent } from './record/record.component';
+import { ShareModule } from './share/share.module';
+
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { RecordComponent } from './record/record.component';
     AppRouteModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule 
+    HttpModule,
+    ShareModule
   ],
   providers: [],
   bootstrap: [AppComponent]

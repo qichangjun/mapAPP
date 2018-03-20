@@ -1,0 +1,13 @@
+<span *ngFor="let rooNode of breadcrumbService.getRootNodes()" 
+  (click)="clickRootNode(rooNode)"
+>
+  {{rooNode}} > 
+</span>
+
+<span *ngFor="let breadData of breadCrumbData">
+  
+  <span [hidden]="breadcrumbService.isRouteHidden(breadData[options.keyTitle])"
+    (click)="breadNodeClick(breadData)">
+    {{breadData[options.keyTitle]}} >
+   </span>
+</span>
