@@ -4,4 +4,9 @@
 <button (click)="forceRefresh()">强制刷新</button>
 <app-breadcrumb [options]="breadCrumbOptions" #breadCrumb [ids]="ids" (rootClickEvent)="rootClickEvent($event)" (breadNodeClickEvent)="clickBreadcrumb($event)"></app-breadcrumb>
 
-<app-z-tree [ids]="ids" [option]="zTreeOption" (clickTree)="clickTreeEvent($event)"></app-z-tree>
+<app-z-tree style="display: block;
+        float: left;
+        width: 400px;" 
+        [ids]="ids" [option]="zTreeOption" (clickTree)="clickTreeEvent($event)"></app-z-tree>
+
+<app-ag-grid ></app-ag-grid>

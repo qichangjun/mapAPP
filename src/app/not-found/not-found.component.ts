@@ -17,7 +17,7 @@ export class NotFoundComponent implements OnInit,AfterViewInit {
     keyId : 'r_object_id',
     requestId : 'ids',
     keyTitle : 'object_name',
-    url:'http://kmdoc.wison.com/edmsapi/navigation/breadcrumbs',
+    url:'edmsapi/navigation/breadcrumbs',
     additionalParam : {        
       docbase : 'wison_company',
       accessToken : 'e66805ee5135f86c25c5df9a26a18f37',
@@ -28,7 +28,7 @@ export class NotFoundComponent implements OnInit,AfterViewInit {
   zTreeOption : zTreeOption = {
     treeId : 'ztree',
     async : {
-      url : 'http://kmdoc.wison.com/edmsapi/navigation/treeNodes',
+      url : 'edmsapi/navigation/treeNodes',
       otherParam : {
         accessToken : 'e66805ee5135f86c25c5df9a26a18f37',
         accessUser : 'czU5dmN1Qm9qREw4cG1XL0NnV3ZXbEx5djRkZDJnaEJVSXNqeHJTckE1RHdwTFpqZ2s5Q2p4Sm0wa3hySCswTlowb3NNQXFTNzNrYWp1TXJpOENjOWdOT29sKzgrVXhMN1hVQWk5UXhKbUIrRUh4SUtycS9jb2tra0pVYmE1SGg=',        
@@ -62,8 +62,7 @@ export class NotFoundComponent implements OnInit,AfterViewInit {
     this.router.navigate([], { queryParams: {ids:strIds}});
   }
 
-  rootClickEvent({node}){
-    console.log(node)
+  rootClickEvent({node}){     
     this.router.navigate([], { queryParams: {ids:0}});
   }
 

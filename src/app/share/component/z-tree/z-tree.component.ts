@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter,OnChanges,SimpleChange  } from '@angular/core';
 import { zTreeService } from './z-tree.service';
 import { Options } from './option.class';
-import * as _ from "lodash";
+import { merge as lodashMerge }  from "lodash";
 
 declare var jQuery:any;
 declare var $ : any;
@@ -34,22 +34,25 @@ export class ZTreeComponent implements OnInit {
       url : 'null',
       dataFilter: this.ajaxDataFilter.bind(this),
       autoParam:["r_object_id=ids"],
-      otherParam: {
-        
-      }
+      otherParam: {}
     }
   }
   constructor(
     private _zTreeService : zTreeService
   ) {
-    this.option = _.merge(this.defaultOptions,this.option)   
+    //合并用户设置和默认设置
+    this.option = lodashMerge(this.defaultOptions,this.option)   
   }
 
   ngOnInit() {        
   }
 
+  /**
+   * 第一次加载树的数据
+   * 并根据ids，默认展开ids最后一个节点(即定位功能)
+   */
   async getTreeDataInit(){    
-    let treeData = await this._zTreeService.getTreeDataPaths(this.option.async.url,this.ids)
+    let treeData = await this._zTreeService.getTreeDataPaths(this.option.async.url,this.ids,this.option.async.otherParam)
     if (this.option.additionData){
       treeData.push(this.option.additionData)
     }    
@@ -65,6 +68,11 @@ export class ZTreeComponent implements OnInit {
     },10)
   }
 
+  /**
+   * 自定义dom节点
+   * @param treeId 树容器id
+   * @param treeNode 节点对象
+   */
   addDiyDom (treeId, treeNode):void{
     let spaceWidth = 18;
     let switchObj = jQuery("#" + treeNode.tId + "_switch");
@@ -75,6 +83,12 @@ export class ZTreeComponent implements OnInit {
     switchObj.before(spaceStr);
   }
 
+  /**
+   * 点击节点事件
+   * @param event 
+   * @param treeId 
+   * @param treeNode 
+   */
   clickDom (event, treeId, treeNode):void {
     let zTreeObj = $.fn.zTree.getZTreeObj(this.option.treeId);
     if (!zTreeObj) return console.error('未找到树对象')
@@ -89,6 +103,12 @@ export class ZTreeComponent implements OnInit {
     this.clickTree.emit({ids:this.generateTreeNodeIds(treeNode),node:treeNode});
   }
 
+  /**
+   * 
+   * @param treeId 
+   * @param parentNode 父节点对象
+   * @param res http请求的返回值
+   */
   ajaxDataFilter (treeId, parentNode, res){
     if (res.code == '1') {
       let c_docTreeData=[];
@@ -114,6 +134,12 @@ export class ZTreeComponent implements OnInit {
     }
   }
 
+  /**
+   * 所有异步操作的成功回调(展开，刷新，重新初始化等操作)
+   * @param event 
+   * @param treeId 
+   * @param treeNode 
+   */
   onAsyncSuccess(event, treeId, treeNode){
     if (this.keepNode){
       let zTreeObj = $.fn.zTree.getZTreeObj(this.option.treeId);
@@ -125,6 +151,10 @@ export class ZTreeComponent implements OnInit {
     }
   }
 
+  /**
+   * 根据节点获取ids路径
+   * @param treeNode 
+   */
   generateTreeNodeIds(treeNode): Array<any> {
     let treeNodeIds=[];
     treeNodeIds.unshift(treeNode.r_object_id);
@@ -142,6 +172,10 @@ export class ZTreeComponent implements OnInit {
     return treeNodeIds
   };
 
+  /**
+   * 父控件更新ids时，在树节点中展开对应节点
+   * @param ids 
+   */
   async updateData(ids){    
     let zTreeObj = $.fn.zTree.getZTreeObj(this.option.treeId);
     if (!zTreeObj) return console.error('未找到树对象')
@@ -153,10 +187,17 @@ export class ZTreeComponent implements OnInit {
   }
 
   ngOnChanges(changes: {[propertyName: string]: SimpleChange}){
+    /**
+     * 初始化操作/每次用户修改otion时，重新加载树
+     */
     if (changes['option']) {
-      this.option = _.merge(this.defaultOptions,this.option)  
+      this.option = lodashMerge(this.defaultOptions,this.option)  
       this.getTreeDataInit()          
     } 
+    /**
+     * 若时第一次设置ids，则用getTreeDataInit()方法初始化
+     * 否则用updateData方法定位
+     */
     if (changes['ids']) {    
       if (changes['ids'].firstChange) return               
       this.updateData(this.ids)      

@@ -17,6 +17,9 @@ export class EsriMapComponent implements OnInit {
         private esriMapService: EsriMapService
     ) { }
     ngOnInit() {
+        const options = {
+            url: 'http://localhost:4200/assets/arcgis_js_api/library/4.6/dojo/dojo.js'
+        };
         loadModules([
             "esri/Basemap",
             "esri/layers/OpenStreetMapLayer",
@@ -30,7 +33,7 @@ export class EsriMapComponent implements OnInit {
             "esri/layers/FeatureLayer",
             "esri/layers/support/Field",
             "dojo/domReady!"
-        ])
+        ],options)
             .then(([Basemap, OpenStreetMapLayer, Map, SceneView, Extent, Point, Search, Graphic, PopupTemplate, FeatureLayer, Field]) => {
                 // --------------------------------------------------------------------
                 // 实例化新的OpenStreetMapLayer视图层
@@ -50,11 +53,10 @@ export class EsriMapComponent implements OnInit {
                 });
 
                 //  --------------------------------------------------------------------
-                //  若要设置为地球化视图，则加入ground: "world-elevation"
+                //  若要设置为显示立体图，则加入ground: "world-elevation"
                 //  --------------------------------------------------------------------
                 let myMap = new Map({
-                    basemap: customBasemap,
-                    ground: "world-elevation"
+                    basemap: customBasemap                    
                 });
                 //  --------------------------------------------------------------------
                 //  center，设置为杭州的经纬度

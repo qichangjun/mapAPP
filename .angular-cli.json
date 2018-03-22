@@ -26,8 +26,7 @@
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "../src/assets/zTree/main.scss"
       ],
-      "scripts": [
-        "assets/arcgis_js_api/library/4.6/dojo/dojo.js",
+      "scripts": [        
         "../node_modules/jquery/dist/jquery.min.js",
         "../node_modules/bootstrap/dist/js/bootstrap.min.js",        
         "../src/assets/zTree/zTree_v3/js/jquery.ztree.core-3.5.js"

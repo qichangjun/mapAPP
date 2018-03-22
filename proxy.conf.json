@@ -1,0 +1,12 @@
+{
+  "/edmsapi": {
+    "target": {
+        "host" : "kmdoc.wison.com",
+        "protocol" : "http",
+        "port" : "80"
+    },    
+    "secure": false,
+    "changeOrigin": true,
+     "logLevel": "info"
+  }
+}
